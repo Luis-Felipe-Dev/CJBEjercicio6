@@ -1,11 +1,10 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Vector;
+import java.io.*;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String textoInvertido = reverse("Hola mundo");
         System.out.println(textoInvertido);
 
@@ -99,6 +98,10 @@ public class Main {
         }
 
         System.out.println("#############################");
+
+        entradaSalida("src\\org\\example\\ficheroPrueba.txt", "src\\org\\example\\copiaFicheroPrueba.txt");
+
+        programaFinal("src\\org\\example\\ficheroPrueba.txt", "src\\org\\example\\programaFinal.txt");
     }
 
     static double DividePorCero(int n1, int n2) {
@@ -118,12 +121,42 @@ public class Main {
         return textoInvertido;
     }
 
+    public static PrintStream entradaSalida(String fileIn, String fileOut) throws IOException {
+        InputStream entrada = new FileInputStream(fileIn);
+        byte []datos = entrada.readAllBytes();
+
+        PrintStream salida = new PrintStream(fileOut);
+        salida.write(datos);
+        return salida;
+    }
+    public static PrintStream programaFinal(String fileIn, String fileOut) throws IOException {
+        ArrayList<Integer> numeros = new ArrayList<Integer>();
+        InputStream entrada = new FileInputStream(fileIn);
+        byte[] datos = entrada.readAllBytes();
+        for (int num: datos) {
+            numeros.add(num);
+        }
+        entrada.close();
+
+        HashMap<String, Integer> mapa = new HashMap<>();
+
+        PrintStream salida = new PrintStream(fileOut);
+        for (Integer num: numeros) {
+            mapa.put("Clave" + num, num * 10);
+            salida.write(num);
+        }
+
+        salida.close();
+
+
+        for(Map.Entry elemento : mapa.entrySet()){
+            System.out.println("Elemento clave es: " + elemento.getKey());
+            System.out.println("Elemento valor es: " + elemento.getValue());
+        }
+        return salida;
+    }
 }
 
-//Utilizando InputStream y PrintStream, crea una función que
-// reciba dos parámetros: "fileIn" y "fileOut". La tarea de la
-// función será realizar la copia del fichero dado en el parámetro
-// "fileIn" al fichero dado en "fileOut".
 
 //Sorpréndenos creando un programa de tu elección que utilice
 // InputStream, PrintStream, excepciones, un HashMap y un ArrayList,
